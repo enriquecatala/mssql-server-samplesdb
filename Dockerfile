@@ -34,7 +34,6 @@ RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-serv
 
 # Tpcc, Pubs and Northwind
 #
-COPY ./Backups/Tpcc.bak ./
 COPY ./Backups/Pubs.bak ./
 COPY ./Backups/Northwind.bak ./
 
