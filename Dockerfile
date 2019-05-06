@@ -1,8 +1,8 @@
 FROM mcr.microsoft.com/mssql/server:2019-CTP2.5-ubuntu
 EXPOSE 1433
 
-LABEL  "MAINTAINER" "Enrique Catalá Bañuls <ecatala@solidq.com>"
-LABEL "Project" "SolidQ Summit Session - Planes de Ejecucion con SQL Server 2019"
+LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
+LABEL "Project" "Microsoft SQL Server container with sample databases"
 
 
 RUN apt-get update && apt-get install -y  \
