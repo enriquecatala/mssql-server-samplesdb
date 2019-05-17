@@ -49,7 +49,6 @@ RUN chmod +x setup.sh
 RUN chmod +x entrypoint.sh
 
 # This entrypoint start sql server, restores data and waits infinitely
-#CMD /bin/bash ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 
 CMD ["sleep infinity"]
