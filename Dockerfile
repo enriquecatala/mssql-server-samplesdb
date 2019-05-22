@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-CTP2.5-ubuntu
+FROM mcr.microsoft.com/mssql/server:2019-CTP3.0-ubuntu
 EXPOSE 1433
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
