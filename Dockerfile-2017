@@ -4,13 +4,9 @@ EXPOSE 1433
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
 LABEL "Project" "Microsoft SQL Server container with sample databases"
 
-# Since SQL Server 2019 is non-root container, we need to force this to install packages
-USER root
 RUN apt-get update && apt-get install -y  \
 	curl \
 	apt-transport-https
-# Get to the default user
-USER 10001
 
 RUN mkdir -p /var/opt/mssql/backup
 WORKDIR /var/opt/mssql/backup
@@ -47,13 +43,6 @@ WORKDIR /usr/config/
 
 COPY setup.* ./
 COPY entrypoint.sh ./
-
-# Since SQL Server 2019 is non-root container, we need to force this to install packages
-USER root
-RUN chown -R 10001:0 setup.sh
-RUN chown -R 10001:0 entrypoint.sh
-# Get to the default user
-USER 10001
 
 RUN chmod +x setup.sh
 RUN chmod +x entrypoint.sh

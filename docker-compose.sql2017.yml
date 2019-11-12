@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db1:
+    container_name: mssql-server-2017-samplesdb
+    build:
+      context: .
+      dockerfile: Dockerfile-2017
+    hostname:
+        sql2017
+    domainname:
+        enriquecatala.com    
+    environment:
+      MSSQL_SA_PASSWORD: "PaSSw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    #volumes:
+    #  - d:/:/data
+    ports:
+      - "14333:1433"
