@@ -2,12 +2,12 @@ version: '3'
 
 services:
   db1:
-    container_name: mssql-server-2019ctp3-samplesdb
+    container_name: mssql-server-2019-samplesdb
     build:
       context: .
       dockerfile: Dockerfile
     hostname:
-        sql2019ctp3
+        sql2019
     domainname:
         enriquecatala.com    
     environment:
