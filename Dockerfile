@@ -8,7 +8,8 @@ LABEL "Project" "Microsoft SQL Server container with sample databases"
 USER root
 RUN apt-get update && apt-get install -y  \
 	curl \
-	apt-transport-https
+	apt-transport-https \
+	p7zip-full
 # Get to the default user
 USER 10001
 
@@ -34,6 +35,13 @@ RUN curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-
 #
 RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
+
+# StackOverflow2010
+# 
+RUN curl -L -o StackOverflow2010.7z http://downloads.brentozar.com.s3.amazonaws.com/StackOverflow2010.7z
+# This is going to unzip the 10Gb StackOverflow sample database
+#
+RUN 7za x StackOverflow2010.7z -o/var/opt/mssql/data/
 
 # Tpcc, Pubs and Northwind
 #
