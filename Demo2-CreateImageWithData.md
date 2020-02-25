@@ -53,7 +53,7 @@ Validate that this image contains databases restored in it:
 
 ## Output of docker build
 
-Thisi is the expected output of the docker build
+This is the expected output of the docker build
 
 ```powershell
 Sending build context to Docker daemon  13.14MB

@@ -1,13 +1,17 @@
-FROM mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+FROM mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
 EXPOSE 1433
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
 LABEL "Project" "Microsoft SQL Server container with sample databases"
 
-
+# Since SQL Server 2019 is non-root container, we need to force this to install packages
+USER root
 RUN apt-get update && apt-get install -y  \
 	curl \
-	apt-transport-https
+	apt-transport-https \
+	p7zip-full
+# Get to the default user
+USER 10001
 
 RUN mkdir -p /var/opt/mssql/backup
 WORKDIR /var/opt/mssql/backup
@@ -32,6 +36,13 @@ RUN curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-
 RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
 
+# StackOverflow2010
+# 
+RUN curl -L -o StackOverflow2010.7z http://downloads.brentozar.com.s3.amazonaws.com/StackOverflow2010.7z
+# This is going to unzip the 10Gb StackOverflow sample database
+#
+RUN 7za x StackOverflow2010.7z -o/var/opt/mssql/data/
+
 # Tpcc, Pubs and Northwind
 #
 COPY ./Backups/Pubs.bak ./
@@ -42,14 +53,20 @@ COPY ./Backups/Northwind.bak ./
 RUN mkdir -p /usr/config
 WORKDIR /usr/config/
 
-COPY setup.* ./
-COPY entrypoint.sh ./
+COPY setup-persistentvolume.* ./
+COPY entrypoint-persistentvolume.sh ./
 
-RUN chmod +x setup.sh
-RUN chmod +x entrypoint.sh
+# Since SQL Server 2019 is non-root container, we need to force this to install packages
+USER root
+RUN chown -R 10001:0 setup-persistentvolume.sh
+RUN chown -R 10001:0 entrypoint-persistentvolume.sh
+# Get to the default user
+USER 10001
+
+RUN chmod +x setup-persistentvolume.sh
+RUN chmod +x entrypoint-persistentvolume.sh
 
 # This entrypoint start sql server, restores data and waits infinitely
-#CMD /bin/bash ./entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["./entrypoint-persistentvolume.sh"]
 
 CMD ["sleep infinity"]
