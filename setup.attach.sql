@@ -36,33 +36,11 @@ CREATE DATABASE [AdventureWorks2012] ON
        (FILENAME= N'/local_mountpoint/AdventureWorks2012_log.ldf')
 FOR ATTACH;
 
-CREATE DATABASE [AdventureWorksDW2017] ON 
-       (FILENAME= N'/local_mountpoint/AdventureWorksDW2017.mdf'  ),
-       (FILENAME= N'/local_mountpoint/AdventureWorksDW2017_log.ldf')
-FOR ATTACH;
-
-
--- WideWorldImportersDW
+-- WideWorldImporters
 --
-
-CREATE DATABASE [WideWorldImportersDW] ON
-       (FILENAME = N'/local_mountpoint/WideWorldImportersDW.mdf'),
-       (FILENAME = N'/local_mountpoint/WideWorldImportersDW_UserData.ndf'),
-	(FILENAME = N'/local_mountpoint/WideWorldImportersDW_InMemory_Data_1'),
-	(FILENAME = N'/local_mountpoint/WideWorldImportersDW.ldf')
-FOR ATTACH;
-
 CREATE DATABASE [WideWorldImporters] ON
        (FILENAME = N'/local_mountpoint/WideWorldImporters.mdf'),
        (FILENAME = N'/local_mountpoint/WideWorldImporters_UserData.ndf'),
 	(FILENAME = N'/local_mountpoint/WideWorldImporters_InMemory_Data_1'),
 	(FILENAME = N'/local_mountpoint/WideWorldImporters.ldf')
 FOR ATTACH;
-
--- StackOverflow2010
---
-CREATE DATABASE [StackOverflow2010] ON 
-( FILENAME = N'/var/opt/mssql/data/StackOverflow2010.mdf' ),
-( FILENAME = N'/var/opt/mssql/data/StackOverflow2010_log.ldf' )
- FOR ATTACH
-GO

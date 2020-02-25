@@ -53,20 +53,20 @@ COPY ./Backups/Northwind.bak ./
 RUN mkdir -p /usr/config
 WORKDIR /usr/config/
 
-COPY setup-persistentvolume.* ./
-COPY entrypoint-persistentvolume.sh ./
+COPY setup-nonpersistentvolume.* ./
+COPY entrypoint-nonpersistentvolume.sh ./
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
-RUN chown -R 10001:0 setup-persistentvolume.sh
-RUN chown -R 10001:0 entrypoint-persistentvolume.sh
+RUN chown -R 10001:0 setup-nonpersistentvolume.sh
+RUN chown -R 10001:0 entrypoint-nonpersistentvolume.sh
 # Get to the default user
 USER 10001
 
-RUN chmod +x setup-persistentvolume.sh
-RUN chmod +x entrypoint-persistentvolume.sh
+RUN chmod +x setup-nonpersistentvolume.sh
+RUN chmod +x entrypoint-nonpersistentvolume.sh
 
 # This entrypoint start sql server, restores data and waits infinitely
-ENTRYPOINT ["./entrypoint-persistentvolume.sh"]
+ENTRYPOINT ["./entrypoint-nonpersistentvolume.sh"]
 
 CMD ["sleep infinity"]

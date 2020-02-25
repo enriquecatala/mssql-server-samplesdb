@@ -19,14 +19,13 @@ echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
 
 # If the wideworldimportersdw is restored, we don´t need to restore it again
 #
-file="/local_mountpoint/WideWorldImportersDW.mdf"
+file="/var/opt/mssql/data/WideWorldImportersDW.mdf"
 
 if [ ! -f "$file" ]
 then
 	echo "*********** Restoring databases: WideWorldImporters, Adventureworks, tpcc ..." | tee -a ./config.log
-	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup-persistentvolume.restore.sql
+	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup-nonpersistentvolume.sql
 else
-	echo "*********** Attaching previously restored databases..." | tee -a ./config.log
-	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup-persistentvolume.attach.sql
+	echo "*********** Databases Restored: ..." | tee -a ./config.log
 fi
 echo "======= MSSQL CONFIG COMPLETE =======" | tee -a ./config.log

@@ -2,10 +2,10 @@ version: '2.2'
 
 services:
   db1:
-    container_name: mssql-server-2019-samplesdb-persistent
+    container_name: mssql-server-2019-samplesdb-nonpersistentvolume
     build:
       context: .
-      dockerfile: Dockerfile-persistentvolume
+      dockerfile: Dockerfile-nonpersistentvolume
     hostname:
         sql2019
     domainname:
@@ -14,8 +14,8 @@ services:
       MSSQL_SA_PASSWORD: "PaSSw0rd"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-    volumes:
-      - ${LOCAL_MOUNTPOINT}:/local_mountpoint
+    #volumes:
+    #  - d:/:/data
     ports:
       - "14333:1433"
     mem_limit: 8Gb

@@ -19,13 +19,30 @@ echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
 
 # If the wideworldimportersdw is restored, we don´t need to restore it again
 #
-file="/var/opt/mssql/data/WideWorldImportersDW.mdf"
+file="/local_mountpoint/WideWorldImportersDW.mdf"
 
 if [ ! -f "$file" ]
 then
 	echo "*********** Restoring databases: WideWorldImporters, Adventureworks, tpcc ..." | tee -a ./config.log
-	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.sql
+	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.restore.sql
+
+	case $INCLUDE_BIG_DATABASES in	
+	1)	echo "*********** Restoring big databases: WideWorldImportersDW, AdventureworksDW, StackOverflow..." | tee -a ./config.log
+		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.restore.sql	
+	;;
+	*)
+	;;
+	esac
 else
-	echo "*********** Databases Restored: ..." | tee -a ./config.log
+	echo "*********** Attaching previously restored databases..." | tee -a ./config.log
+	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.attach.sql
+	
+	case $INCLUDE_BIG_DATABASES in	
+	1)	echo "*********** Attaching previously restored big databases..." | tee -a ./config.log
+		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.attach.sql
+	;;
+	*)
+	;;
+	esac	
 fi
 echo "======= MSSQL CONFIG COMPLETE =======" | tee -a ./config.log
