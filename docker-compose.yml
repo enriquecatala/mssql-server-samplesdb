@@ -15,8 +15,10 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
       INCLUDE_BIG_DATABASES: "${INCLUDE_BIG_DATABASES}"
+      FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"
     volumes:
       - ${LOCAL_MOUNTPOINT}:/local_mountpoint
     ports:
       - "14333:1433"
     mem_limit: 8Gb
+    cpu_count: 4

@@ -4,14 +4,14 @@
 export STATUS=1
 i=0
 
-while [[ $STATUS -ne 0 ]] && [[ $i -lt 30 ]]; do
+while [[ $STATUS -ne 0 ]] && [[ $i -lt 60 ]]; do
 	i=$i+1
 	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" >> /dev/null
 	STATUS=$?
 done
 
 if [ $STATUS -ne 0 ]; then 
-	echo "Error: MSSQL SERVER took more than thirty seconds to start up."
+	echo "Error: MSSQL SERVER took more than 60 seconds to start up."
 	exit 1
 fi
 
@@ -19,7 +19,7 @@ echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
 
 # If the wideworldimportersdw is restored, we don´t need to restore it again
 #
-file="/local_mountpoint/WideWorldImportersDW.mdf"
+file="/local_mountpoint/Pubs.mdf"
 
 if [ ! -f "$file" ]
 then
@@ -34,15 +34,24 @@ then
 	;;
 	esac
 else
-	echo "*********** Attaching previously restored databases..." | tee -a ./config.log
-	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.attach.sql
-	
-	case $INCLUDE_BIG_DATABASES in	
+	case $FORCE_ATTACH_IF_MDF_EXISTS in	
 	1)	echo "*********** Attaching previously restored big databases..." | tee -a ./config.log
 		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.attach.sql
+
+		echo "*********** Attaching previously restored databases..." | tee -a ./config.log
+		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.attach.sql
+		
+		case $INCLUDE_BIG_DATABASES in	
+		1)	echo "*********** Attaching previously restored big databases..." | tee -a ./config.log
+			/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.attach.sql
+		;;
+		*)
+		;;
+		esac	
 	;;
 	*)
 	;;
 	esac	
+
 fi
 echo "======= MSSQL CONFIG COMPLETE =======" | tee -a ./config.log
