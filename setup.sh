@@ -35,10 +35,7 @@ then
 	esac
 else
 	case $FORCE_ATTACH_IF_MDF_EXISTS in	
-	1)	echo "*********** Attaching previously restored big databases..." | tee -a ./config.log
-		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.attach.sql
-
-		echo "*********** Attaching previously restored databases..." | tee -a ./config.log
+	1)	echo "*********** Attaching previously restored databases..." | tee -a ./config.log
 		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.attach.sql
 		
 		case $INCLUDE_BIG_DATABASES in	
