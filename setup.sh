@@ -4,7 +4,7 @@
 export STATUS=1
 i=0
 
-while [[ $STATUS -ne 0 ]] && [[ $i -lt 60 ]]; do
+while [[ $STATUS -ne 0 ]] && [[ $i -lt 90 ]]; do
 	i=$i+1
 	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" >> /dev/null
 	STATUS=$?
