@@ -2,12 +2,12 @@ version: '2.2'
 
 services:
   db1:
-    container_name: mssql-server-2017-samplesdb-persistent
+    container_name: mssql-server-2017-samplesdb
     build:
       context: .
       dockerfile: Dockerfile-2017
     hostname:
-        sql2017
+        mssql-samplesdb
     domainname:
         enriquecatala.com    
     environment:

@@ -2,12 +2,12 @@ version: '2.2'
 
 services:
   db1:
-    container_name: mssql-server-2019-samplesdb-persistent
+    container_name: mssql-server-samplesdb
     build:
       context: .
       dockerfile: Dockerfile
     hostname:
-        sql2019
+        mssql-samplesdb
     domainname:
         enriquecatala.com    
     environment:

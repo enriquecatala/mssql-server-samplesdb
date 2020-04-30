@@ -10,8 +10,14 @@ RUN apt-get update && apt-get install -y  \
 	curl \
 	apt-transport-https \
 	p7zip-full
+
+# Create the local_mountpoint folder where the restores will be happening
+RUN mkdir -p /local_mountpoint
+RUN chown mssql:0 /local_mountpoint
+RUN chmod +rwx /local_mountpoint
+
 # Get to the default user
-USER 10001
+USER mssql
 
 RUN mkdir -p /var/opt/mssql/backup
 WORKDIR /var/opt/mssql/backup
@@ -58,10 +64,10 @@ COPY entrypoint.sh ./
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
-RUN chown -R 10001:0 setup.sh
-RUN chown -R 10001:0 entrypoint.sh
+RUN chown -R mssql:0 setup.sh
+RUN chown -R mssql:0 entrypoint.sh
 # Get to the default user
-USER 10001
+USER mssql
 
 RUN chmod +x setup.sh
 RUN chmod +x entrypoint.sh
