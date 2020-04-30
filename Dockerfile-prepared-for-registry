@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+FROM mcr.microsoft.com/mssql/server:2019-latest
 EXPOSE 1433
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y  \
 USER 10001
 
 RUN mkdir -p /var/opt/mssql/backup
+RUN mkdir -p /local_mountpoint
+
 WORKDIR /var/opt/mssql/backup
 
 ##############################################################
@@ -29,19 +31,11 @@ RUN curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-sa
 RUN curl -L -o AdventureWorks2014.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2014.bak
 RUN curl -L -o AdventureWorks2012.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2012.bak
 
-RUN curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2017.bak
 
 # WideWorldImporters databases
 #
 RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
-
-# StackOverflow2010
-# 
-RUN curl -L -o StackOverflow2010.7z http://downloads.brentozar.com.s3.amazonaws.com/StackOverflow2010.7z
-# This is going to unzip the 10Gb StackOverflow sample database
-#
-RUN 7za x StackOverflow2010.7z -o/var/opt/mssql/data/
 
 # Tpcc, Pubs and Northwind
 #
@@ -53,20 +47,20 @@ COPY ./Backups/Northwind.bak ./
 RUN mkdir -p /usr/config
 WORKDIR /usr/config/
 
-COPY setup-nonpersistentvolume.* ./
-COPY entrypoint-nonpersistentvolume.sh ./
+COPY setup.* ./
+COPY entrypoint.sh ./
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
-RUN chown -R 10001:0 setup-nonpersistentvolume.sh
-RUN chown -R 10001:0 entrypoint-nonpersistentvolume.sh
+RUN chown -R 10001:0 setup.sh
+RUN chown -R 10001:0 entrypoint.sh
 # Get to the default user
 USER 10001
 
-RUN chmod +x setup-nonpersistentvolume.sh
-RUN chmod +x entrypoint-nonpersistentvolume.sh
+RUN chmod +x setup.sh
+RUN chmod +x entrypoint.sh
 
 # This entrypoint start sql server, restores data and waits infinitely
-ENTRYPOINT ["./entrypoint-nonpersistentvolume.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
 
 CMD ["sleep infinity"]
