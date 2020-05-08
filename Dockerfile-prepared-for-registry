@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04
+FROM mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04
 EXPOSE 1433
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
@@ -12,11 +12,11 @@ RUN apt-get update && apt-get install -y  \
 
 # Create the local_mountpoint folder where the restores will be happening
 RUN mkdir -p /local_mountpoint
-RUN chown mssql:0 /local_mountpoint
+RUN chown 10001:0 /local_mountpoint
 RUN chmod +rwx /local_mountpoint
 
 # Get to the default user
-USER mssql
+USER 10001
 
 RUN mkdir -p /var/opt/mssql/backup
 
@@ -56,10 +56,10 @@ COPY entrypoint.sh ./
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
-RUN chown -R mssql:0 setup.sh
-RUN chown -R mssql:0 entrypoint.sh
+RUN chown -R 10001:0 setup.sh
+RUN chown -R 10001:0 entrypoint.sh
 # Get to the default user
-USER mssql
+USER 10001
 
 RUN chmod +x setup.sh
 RUN chmod +x entrypoint.sh
