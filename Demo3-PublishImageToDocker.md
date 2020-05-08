@@ -2,30 +2,24 @@
 
 To manually publish your image go docker, you must follow this:
 
-## Create the image
+## Get the IMAGE_ID of your image
 
-With this command we are going to create our own image
+docker image list will show all the images you have, so check all the images and search for the one you just created
+
 ```powershell
-docker-compose build
+PS D:\git\mssql-samples-db> docker image list   
+REPOSITORY                       TAG                      IMAGE ID            CREATED              SIZE
+mssql-server-samplesdb_db1       latest                   __IMAGE_ID_VALUE__        About a minute ago   2.06GB
 ```
 
 ## Push the image
 
-Execute the container exposing port 14333 and connecting the local volue d:/ inside the container. This is very interesting when you want to get data from your local storage outside the container
-
-First you need to validate that the image exists:
-
-```powershell
-docker image list
-
-REPOSITORY                       TAG                  IMAGE ID             CREATED             SIZE
-my-image                         latest               __IMAGE_ID_VALUE__   3 minutes ago       2.02GB
-```
+Now that you have the IMAGE_ID you want to push to your docker image registry, 
 
 And now you can instantiate a container from the image:
 
 ```powershell
-docker tag __IMAGE_ID_VALUE__ enriquecatala/mssql-server-samplesdb:2019-ctp3.0-ubuntu
+docker tag 9e4b368a45e8 enriquecatala/mssql-server-samplesdb:2019-CU4-ubuntu-16.04
 docker login
 docker push enriquecatala/mssql-server-samplesdb
 ```

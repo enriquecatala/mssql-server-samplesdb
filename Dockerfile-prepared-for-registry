@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-latest
+FROM mcr.microsoft.com/mssql/server:2019-CU4-ubuntu-16.04
 EXPOSE 1433
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
@@ -8,8 +8,7 @@ LABEL "Project" "Microsoft SQL Server container with sample databases"
 USER root
 RUN apt-get update && apt-get install -y  \
 	curl \
-	apt-transport-https \
-	p7zip-full
+	apt-transport-https
 
 # Create the local_mountpoint folder where the restores will be happening
 RUN mkdir -p /local_mountpoint
@@ -40,7 +39,6 @@ RUN curl -L -o AdventureWorks2012.bak https://github.com/Microsoft/sql-server-sa
 
 # WideWorldImporters databases
 #
-RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
 
 # Tpcc, Pubs and Northwind

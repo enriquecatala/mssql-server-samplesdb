@@ -5,51 +5,41 @@ To manually run the container without using the docker-compose, you must follow 
 ## Create the image
 
 With this command we are going to create our own image
+
 ```powershell
-docker build -t my-image . 
+docker-compose -f docker-compose-docker-registry.yml build
 ```
 
 And [this is the expected output](##Output-of-docker-build)
 
-## Run the container
 
-Execute the container exposing port 14333 and connecting the local volue d:/ inside the container. This is very interesting when you want to get data from your local storage outside the container
+## Check that your image has been created
 
-First you need to validate that the image exists:
-
-```powershell
-docker image list
-
-REPOSITORY                       TAG                  IMAGE ID            CREATED             SIZE
-my-image                         latest               209405f1d529        3 minutes ago       2.02GB
-```
-
-And now you can instantiate a container from the image:
+docker image list will show all the images you have, so check all the images and search for the one you just created
 
 ```powershell
-docker run -p 14333:1433 -it -v d:/:/data  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=PaSSw0rd' -e 'MSSQL_SA_PASSWORD=PaSSw0rd' --name my-container-sql2019 my-image
+PS D:\git\mssql-samples-db> docker image list   
+REPOSITORY                       TAG                      IMAGE ID            CREATED              SIZE
+mssql-server-samplesdb_db1       latest                   1fd0d8711d7d        About a minute ago   2.06GB
 ```
 
-_MSSQL_SA_PASSWORD is a variable used in [setup.sh](/setup.sh), its intentional to show you how the variables works_
+## Run the container (optional)
 
-This is going to take a while depending on your machine, since the docker container is going to start the SQL Server instance and restore all databases... You will find a mark in the OUTPUT signaling when the restores start and end. something like:
+You can check if your container has all the databases and configuration you scripted
 
 ```powershell
-======= MSSQL SERVER STARTED ========
-*********** Restoring databases: WideWorldImporters, Adventureworks, tpcc ...
-...
-...
-RESTORE DATABASE successfully processed 58455 pages in 3.626 seconds (125.944 MB/sec).
-======= MSSQL CONFIG COMPLETE =======
+docker-compose -f docker-compose-docker-registry.yml up
 ```
+>NOTE: You don´t need to start your image to upload to the docker´s registry
 
-## Connect to the container
+### Connect to the container 
 
 ```powershell
 sqlcmd -S laptop,14333 -U sa -P 'PaSSw0rd' -Q "select @@version"
 ```
 
 Validate that this image contains databases restored in it:
+
 
 ## Output of docker build
 
