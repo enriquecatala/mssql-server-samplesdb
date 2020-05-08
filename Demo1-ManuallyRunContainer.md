@@ -43,6 +43,98 @@ docker run -p 14333:1433 -it -v d:/:/data  -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Pa
 ```
 
 This time it will throw you an error:
+# How to manually run a container
+
+In this demo we will instantiate a docker image with the latest SQL Server 2017
+
+## Pull the image from repository
+
+```powershell
+docker pull mcr.microsoft.com/mssql/server:2017-latest
+```
+>NOTE: valid tags: https://hub.docker.com/_/microsoft-mssql-server?tab=description 
+
+## Run the container
+
+Execute the container as SQL Server **Express**, exposing **port 14333**  and **4Gb of RAM**.
+
+```powershell
+docker run --memory=4g -p 14333:1433 -it -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=PaSSw0rd' -e 'MSSQL_PID=Express' --name my-container-sql2017 mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04
+```
+>NOTE: Resource tags https://docs.docker.com/config/containers/resource_constraints/
+
+## See all the containers running(or not)
+
+```powershell
+docker container list -a
+```
+
+## Connect to the container
+
+```powershell
+sqlcmd -S localhost,14333 -U sa -P 'PaSSw0rd' -Q "select @@version"
+```
+
+## Create a database with some data
+
+```sql
+USE [master]
+go
+create database test
+go
+use test
+go
+create table mytable(a int, b varchar(100))
+go
+insert into mytable(a,b) values(1,'hola'),(2,'mundo')
+go
+select * from mytable
+go
+```
+
+## Stop the container
+
+By pressyng ctrl+c
+
+## Try to start again the container
+
+```powershell
+docker run --memory=4g -p 14333:1433 -it -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=PaSSw0rd' -e 'MSSQL_PID=Express' --name my-container-sql2017 mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04
+```
+
+This time it will throw you an error:
+
+_C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from daemon: Conflict. The container name "/my-container-sql2017" is already in use by container "70de3443a42ad37f55de9e8db4177a7a846b7067c39faf16db3410ad330dc50a". You have to remove (or rename) that container to be able to reuse that name.
+See 'C:\Program Files\Docker\Docker\Resources\bin\docker.exe run --help'._
+
+So list the containers with
+
+```powershell
+docker container list -a
+```
+
+
+| CONTAINER ID | IMAGE                                      | COMMAND                | CREATED       | STATUS                        | PORTS                | NAMES |
+|--------------|--------------------------------------------|------------------------|---------------|-------------------------------|----------------------|-------|
+| 70de3443a42a | mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04 | "/opt/mssql/bin/sqls…" | 9 minutes ago | Exited (0) About a minute ago |  | my-container-sql2017      |
+|              |                                            |                        |               |                               |                      |       |
+
+and execute the container with the name you gave it:
+
+```powershell
+docker start -i my-container-sql2017
+```
+
+>NOTE: The data still exists within the container...until you delete it
+
+## Clean up container
+
+With the following execution, you will delete all exited containers 
+
+```powershell
+docker rm my-container-sql2017
+```
+
 
 _C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from daemon: Conflict. The container name "/my-container-sql2017" is already in use by container "70de3443a42ad37f55de9e8db4177a7a846b7067c39faf16db3410ad330dc50a". You have to remove (or rename) that container to be able to reuse that name.
 See 'C:\Program Files\Docker\Docker\Resources\bin\docker.exe run --help'._
