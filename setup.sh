@@ -6,12 +6,13 @@ i=0
 
 while [[ $STATUS -ne 0 ]] && [[ $i -lt 90 ]]; do
 	i=$i+1
-	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" >> /dev/null
+	echo "Waiting for SQL Server to start..."
+	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" 2> /dev/null
 	STATUS=$?
 done
 
 if [ $STATUS -ne 0 ]; then 
-	echo "Error: MSSQL SERVER took more than 60 seconds to start up."
+	echo "Error: MSSQL SERVER took more than 90 seconds to start up."
 	exit 1
 fi
 
