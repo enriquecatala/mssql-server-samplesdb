@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y  \
 	apt-transport-https
 
 # Create the local_mountpoint folder where the restores will be happening
-RUN mkdir -p /local_mountpoint
-RUN chown 10001:0 /local_mountpoint
-RUN chmod +rwx /local_mountpoint
+RUN mkdir -p /var/opt/mssql/data
+RUN chown 10001:0 /var/opt/mssql/data
+RUN chmod +rwx /var/opt/mssql/data
 
 # Get to the default user
 USER 10001

@@ -3,17 +3,17 @@
 -- AdventureWorksDW2017
 --
 CREATE DATABASE [AdventureWorksDW2017] ON 
-       (FILENAME= N'/local_mountpoint/AdventureWorksDW2017.mdf'  ),
-       (FILENAME= N'/local_mountpoint/AdventureWorksDW2017_log.ldf')
+       (FILENAME= N'/var/opt/mssql/data/AdventureWorksDW2017.mdf'  ),
+       (FILENAME= N'/var/opt/mssql/data/AdventureWorksDW2017_log.ldf')
 FOR ATTACH;
 
 -- WideWorldImportersDW
 --
 CREATE DATABASE [WideWorldImportersDW] ON
-       (FILENAME = N'/local_mountpoint/WideWorldImportersDW.mdf'),
-       (FILENAME = N'/local_mountpoint/WideWorldImportersDW_UserData.ndf'),
-	(FILENAME = N'/local_mountpoint/WideWorldImportersDW_InMemory_Data_1'),
-	(FILENAME = N'/local_mountpoint/WideWorldImportersDW.ldf')
+       (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.mdf'),
+       (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf'),
+	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1'),
+	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.ldf')
 FOR ATTACH;
 
 -- StackOverflow2010

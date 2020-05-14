@@ -4,15 +4,17 @@
 export STATUS=1
 i=0
 
-while [[ $STATUS -ne 0 ]] && [[ $i -lt 90 ]]; do
+while [[ $STATUS -ne 0 ]] && [[ $i -lt 60 ]]; do
 	i=$i+1
-	echo "Waiting for SQL Server to start..."
-	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" 2> /dev/null
+	echo "*************************************************************************"
+	echo "Waiting for SQL Server to start (it will fail until port is opened)..."
+	/opt/mssql-tools/bin/sqlcmd -t 1 -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -Q "select 1" >> /dev/null
 	STATUS=$?
+	sleep 1	
 done
 
 if [ $STATUS -ne 0 ]; then 
-	echo "Error: MSSQL SERVER took more than 90 seconds to start up."
+	echo "Error: MSSQL SERVER took more than 60 seconds to start up."
 	exit 1
 fi
 
@@ -20,7 +22,7 @@ echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
 
 # If the wideworldimportersdw is restored, we don´t need to restore it again
 #
-file="/local_mountpoint/Pubs.mdf"
+file="/var/opt/mssql/data/Pubs.mdf"
 
 if [ ! -f "$file" ]
 then

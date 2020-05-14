@@ -4,32 +4,32 @@
 -- AdventureworksDW2017
 --
 
-DROP DATABASE IF EXISTS [AdventureWorksDW2017];
-CREATE DATABASE [AdventureWorksDW2017] ON PRIMARY
-       (NAME = N'AdventureWorksDW2017' , FILENAME= N'/local_mountpoint/AdventureWorksDW2017.mdf'  )
-       LOG ON (NAME= N'AdventureWorksDW2017_log', FILENAME= N'/local_mountpoint/AdventureWorksDW2017_log.ldf');
+-- DROP DATABASE IF EXISTS [AdventureWorksDW2017];
+-- CREATE DATABASE [AdventureWorksDW2017] ON PRIMARY
+--        (NAME = N'AdventureWorksDW2017' , FILENAME= N'/var/opt/mssql/data/AdventureWorksDW2017.mdf'  )
+--        LOG ON (NAME= N'AdventureWorksDW2017_log', FILENAME= N'/var/opt/mssql/data/AdventureWorksDW2017_log.ldf');
 RESTORE DATABASE [AdventureWorksDW2017] FROM  
 DISK = N'/var/opt/mssql/backup/AdventureWorksDW2017.bak' WITH  
-FILE = 1,  MOVE N'AdventureWorksDW2017' TO N'/local_mountpoint/AdventureWorksDW2017.mdf',  
-MOVE N'AdventureWorksDW2017_log' TO N'/local_mountpoint/AdventureWorksDW2017_log.ldf',  
+FILE = 1,  MOVE N'AdventureWorksDW2017' TO N'/var/opt/mssql/data/AdventureWorksDW2017.mdf',  
+MOVE N'AdventureWorksDW2017_log' TO N'/var/opt/mssql/data/AdventureWorksDW2017_log.ldf',  
 REPLACE, NOUNLOAD,  STATS = 2;
 
 -- WideWorldImportersDW
 --
-DROP DATABASE IF EXISTS [WideWorldImportersDW];
-CREATE DATABASE [WideWorldImportersDW]
-ON PRIMARY
-       (NAME = N'WWI_Primary', FILENAME = N'/local_mountpoint/WideWorldImportersDW.mdf'),
-       (NAME = N'WWI_UserData',FILENAME = N'/local_mountpoint/WideWorldImportersDW_UserData.ndf'),
-	   (NAME = N'WWIDW_InMemory_Data_1',FILENAME = N'/local_mountpoint/WideWorldImportersDW_InMemory_Data_1')	   
-	   LOG ON (NAME = N'WWI_Log',FILENAME = N'/local_mountpoint/WideWorldImportersDW.ldf');
-GO
+-- DROP DATABASE IF EXISTS [WideWorldImportersDW];
+-- CREATE DATABASE [WideWorldImportersDW]
+-- ON PRIMARY
+--        (NAME = N'WWI_Primary', FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.mdf'),
+--        (NAME = N'WWI_UserData',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf'),
+-- 	   (NAME = N'WWIDW_InMemory_Data_1',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1')	   
+-- 	   LOG ON (NAME = N'WWI_Log',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.ldf');
+-- GO
 RESTORE DATABASE [WideWorldImportersDW] 
 FROM  DISK = N'/var/opt/mssql/backup/WideWorldImportersDW-Full.bak' WITH  
-	FILE = 1,  MOVE N'WWI_Primary' TO N'/local_mountpoint/WideWorldImportersDW.mdf',  
-	MOVE N'WWI_UserData' TO N'/local_mountpoint/WideWorldImportersDW_UserData.ndf',  
-	MOVE N'WWI_Log' TO N'/local_mountpoint/WideWorldImportersDW.ldf',  
-	MOVE N'WWIDW_InMemory_Data_1' TO N'/local_mountpoint/WideWorldImportersDW_InMemory_Data_1',  
+	FILE = 1,  MOVE N'WWI_Primary' TO N'/var/opt/mssql/data/WideWorldImportersDW.mdf',  
+	MOVE N'WWI_UserData' TO N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf',  
+	MOVE N'WWI_Log' TO N'/var/opt/mssql/data/WideWorldImportersDW.ldf',  
+	MOVE N'WWIDW_InMemory_Data_1' TO N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1',  
 	REPLACE, NOUNLOAD,  STATS = 2;
 
 -- StackOverflow2010
