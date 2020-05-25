@@ -14,11 +14,10 @@ services:
       MSSQL_SA_PASSWORD: "PaSSw0rd"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-      INCLUDE_BIG_DATABASES: "0"
       FORCE_ATTACH_IF_MDF_EXISTS: "0"
     #volumes:
     #  - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
     ports:
-      - "14333:1433"
+      - "14330:1433"
     mem_limit: 8Gb
     cpu_count: 4
