@@ -15,8 +15,8 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
       FORCE_ATTACH_IF_MDF_EXISTS: "0"
-    #volumes:
-    #  - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
+    volumes:
+      - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
     ports:
       - "14330:1433"
     mem_limit: 8Gb

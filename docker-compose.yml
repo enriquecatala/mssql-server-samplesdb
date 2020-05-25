@@ -14,9 +14,8 @@ services:
       MSSQL_SA_PASSWORD: "PaSSw0rd"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-      #INCLUDE_ALL_DATABASES: "${INCLUDE_ALL_DATABASES}"
       FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"      
-    # volumes:
+    #volumes:
     #   - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
     ports:
       - "14330:1433"
