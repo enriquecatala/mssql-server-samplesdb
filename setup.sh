@@ -29,8 +29,9 @@ then
 	echo "*********** Restoring databases: WideWorldImporters, Adventureworks, tpcc ..." | tee -a ./config.log
 	/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.restore.sql
 
-	case $INCLUDE_BIG_DATABASES in	
+	case $INCLUDE_ALL_DATABASES in	
 	1)	echo "*********** Restoring big databases: WideWorldImportersDW, AdventureworksDW, StackOverflow..." | tee -a ./config.log
+		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.other_databases.restore.sql	
 		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.restore.sql	
 	;;
 	*)
@@ -41,8 +42,9 @@ else
 	1)	echo "*********** Attaching previously restored databases..." | tee -a ./config.log
 		/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.attach.sql
 		
-		case $INCLUDE_BIG_DATABASES in	
+		case $INCLUDE_ALL_DATABASES in	
 		1)	echo "*********** Attaching previously restored big databases..." | tee -a ./config.log
+			/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.other_databases.attach.sql
 			/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.bigdatabases.attach.sql
 		;;
 		*)

@@ -1,11 +1,17 @@
 FROM mcr.microsoft.com/mssql/server:2019-latest
 EXPOSE 1433
+# You must set this variable with --build-arg INCLUDE_ALL_DATABASES=1 in case you want to restore all databases
+ARG INCLUDE_ALL_DATABASES=0
+# Depending on the value of the ARG, the bash script will try to restore/attach
+ENV INCLUDE_ALL_DATABASES $INCLUDE_ALL_DATABASES
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
 LABEL "Project" "Microsoft SQL Server container with sample databases"
 
+
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
+
 RUN apt-get update && apt-get install -y  \
 	curl \
 	apt-transport-https \
@@ -34,26 +40,27 @@ WORKDIR /var/opt/mssql/backup
 COPY ./Backups/Pubs.bak ./
 COPY ./Backups/Northwind.bak ./
 
-
-RUN curl -L -o AdventureWorks2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
-RUN curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016.bak
-RUN curl -L -o AdventureWorks2014.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2014.bak
-RUN curl -L -o AdventureWorks2012.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2012.bak
-
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
+RUN curl -L -o AdventureWorks2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
+
+
+## The rest of the databases can be added-dropped manually
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016.bak ; else echo 'AdventureWorks2016 skipped since INCLUDE_ALL_DATABASES=0'; fi
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2014.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2014.bak ; else echo 'AdventureWorks2014 skipped since INCLUDE_ALL_DATABASES=0'; fi
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2012.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2012.bak ; else echo 'AdventureWorks2012 skipped since INCLUDE_ALL_DATABASES=0'; fi
 
 ## BIG DATABASES
 #
-RUN curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2017.bak
-RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2017.bak; else echo 'AdventureWorksDW2017 skipped since INCLUDE_ALL_DATABASES=0'; fi
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak; else echo 'WideWorldImportersDW-Full skipped since INCLUDE_ALL_DATABASES=0'; fi
+
 
 # StackOverflow2010
 # 
-RUN curl -L -o StackOverflow2010.7z http://downloads.brentozar.com.s3.amazonaws.com/StackOverflow2010.7z
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then  curl -L -o StackOverflow2010.7z http://downloads.brentozar.com.s3.amazonaws.com/StackOverflow2010.7z; else echo 'StackOverflow2010 skipped since INCLUDE_ALL_DATABASES=0'; fi
 # This is going to unzip the 10Gb StackOverflow sample database
 #
-RUN 7za x StackOverflow2010.7z -o/var/opt/mssql/data/
-
+RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then 7za x StackOverflow2010.7z -o/var/opt/mssql/data/; fi
 
 
 ##############################################################
