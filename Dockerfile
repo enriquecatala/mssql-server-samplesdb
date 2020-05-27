@@ -26,6 +26,7 @@ RUN chmod +rwx /var/opt/mssql/data
 # Get to the default user (mssql = 10001)
 USER 10001
 
+RUN mkdir -p /var/opt/mssql/shared_folder
 RUN mkdir -p /var/opt/mssql/backup
 WORKDIR /var/opt/mssql/backup
 
