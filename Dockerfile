@@ -6,7 +6,7 @@ ARG INCLUDE_ALL_DATABASES=0
 ENV INCLUDE_ALL_DATABASES $INCLUDE_ALL_DATABASES
 
 LABEL  "MAINTAINER" "Enrique Catalá Bañuls <enrique@enriquecatala.com>"
-LABEL "Project" "Microsoft SQL Server container with sample databases"
+LABEL "Project" "Microsoft SQL Server image with sample databases"
 
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages

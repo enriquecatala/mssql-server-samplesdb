@@ -20,6 +20,9 @@ fi
 
 echo "======= MSSQL SERVER STARTED ========" | tee -a ./config.log
 
+echo "*********** Preparing SQL Server instance features: Contained databases " | tee -a ./config.log
+/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.instance.sql
+
 # If the wideworldimportersdw is restored, we don´t need to restore it again
 #
 file="/var/opt/mssql/data/Pubs.mdf"
