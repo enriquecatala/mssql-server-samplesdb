@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db1:
+    container_name: mssql-server-samplesdb
+    image: enriquecatala/mssql-server-samplesdb:2019-latest    
+    hostname:
+        mssql-server
+    domainname:
+        enriquecatala.com    
+    environment:
+      MSSQL_SA_PASSWORD: "PaSSw0rd"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      FORCE_ATTACH_IF_MDF_EXISTS: "0"
+    # Local volumes not supported
+    #volumes:
+    #  - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
+    # Port mapping not supported. You will be required to map to the same port
+    ports:
+      - "1433:1433"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 8Gb
+        reservations:
+          cpus: '1'
+          memory: 2Gb
