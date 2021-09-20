@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/mssql/server:2019-CU8-ubuntu-16.04
+FROM mcr.microsoft.com/mssql/server:2019-latest
 EXPOSE 1433
 # You must set this variable with --build-arg INCLUDE_ALL_DATABASES=1 in case you want to restore all databases
 ARG INCLUDE_ALL_DATABASES=0
