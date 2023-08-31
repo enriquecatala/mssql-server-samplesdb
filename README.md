@@ -33,6 +33,38 @@ Databases included:
 
 > NOTE: Databases marked with * must be switched on during build with **INCLUDE_ALL_DATABASES=1**
 
+## How to run the image
+
+```bash
+# 1- permissions
+#    Since the databases will be restored in your host (local_mountpoint), you need to create the folder and give permissions to the container to write in that folder
+#
+mkdir -p ./local_mountpoint/data/
+mkdir -p ./local_mountpoint/shared_folder/
+sudo chown 10001:0 ./local_mountpoint/data/
+sudo chown 10001:0 ./local_mountpoint/shared_folder/
+sudo chmod +rwx ./local_mountpoint/data/
+sudo chmod +rwx ./local_mountpoint/shared_folder/
+
+# 2- build and run the image
+#
+docker-compose up --build
+```
+
+Now you can open your favorite SQL Server client and connect to your local SQL Server instance. By default:
+- Server localhost,14330
+- user:sa
+- Password: PaSSw0rd
+
+>NOTE: You can find the credentials in the docker-compose.yml file
+
+```yaml
+    environment:
+      MSSQL_SA_PASSWORD: "PaSSw0rd"      
+    ports:
+      - "14330:1433"  
+```
+
 ## Enable all databases
 
 Only common databases are deployed by default. To deploy ALL databases in your container, please enable the build flag called "INCLUDE_ALL_DATABASES=1"
