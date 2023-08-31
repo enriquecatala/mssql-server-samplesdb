@@ -16,21 +16,13 @@ REPLACE, NOUNLOAD,  STATS = 2;
 
 -- WideWorldImportersDW
 --
--- DROP DATABASE IF EXISTS [WideWorldImportersDW];
--- CREATE DATABASE [WideWorldImportersDW]
--- ON PRIMARY
---        (NAME = N'WWI_Primary', FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.mdf'),
---        (NAME = N'WWI_UserData',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf'),
--- 	   (NAME = N'WWIDW_InMemory_Data_1',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1')	   
--- 	   LOG ON (NAME = N'WWI_Log',FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.ldf');
--- GO
-RESTORE DATABASE [WideWorldImportersDW] 
-FROM  DISK = N'/var/opt/mssql/backup/WideWorldImportersDW-Full.bak' WITH  
-	FILE = 1,  MOVE N'WWI_Primary' TO N'/var/opt/mssql/data/WideWorldImportersDW.mdf',  
-	MOVE N'WWI_UserData' TO N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf',  
-	MOVE N'WWI_Log' TO N'/var/opt/mssql/data/WideWorldImportersDW.ldf',  
-	MOVE N'WWIDW_InMemory_Data_1' TO N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1',  
-	REPLACE, NOUNLOAD,  STATS = 2;
+-- RESTORE DATABASE [WideWorldImportersDW] 
+-- FROM  DISK = N'/var/opt/mssql/backup/WideWorldImportersDW-Full.bak' WITH  
+-- 	FILE = 1,  MOVE N'WWI_Primary' TO N'/var/opt/mssql/data/WideWorldImportersDW.mdf',  
+-- 	MOVE N'WWI_UserData' TO N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf',  
+-- 	MOVE N'WWI_Log' TO N'/var/opt/mssql/data/WideWorldImportersDW.ldf',  
+-- 	MOVE N'WWIDW_InMemory_Data_1' TO N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1',  
+-- 	REPLACE, NOUNLOAD,  STATS = 2;
 
 -- StackOverflow2010
 --

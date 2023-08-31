@@ -44,7 +44,6 @@ COPY ./Backups/Northwind.bak ./
 RUN curl -L -o WideWorldImporters-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImporters-Full.bak
 RUN curl -L -o AdventureWorks2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
 
-
 ## The rest of the databases can be added-dropped manually
 RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016.bak ; else echo 'AdventureWorks2016 skipped since INCLUDE_ALL_DATABASES=0'; fi
 RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2014.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2014.bak ; else echo 'AdventureWorks2014 skipped since INCLUDE_ALL_DATABASES=0'; fi
@@ -53,7 +52,9 @@ RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorks2012.b
 ## BIG DATABASES
 #
 RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o AdventureWorksDW2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksDW2017.bak; else echo 'AdventureWorksDW2017 skipped since INCLUDE_ALL_DATABASES=0'; fi
-RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak; else echo 'WideWorldImportersDW-Full skipped since INCLUDE_ALL_DATABASES=0'; fi
+# Always download this one
+# RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak; else echo 'WideWorldImportersDW-Full skipped since INCLUDE_ALL_DATABASES=0'; fi
+RUN curl -L -o WideWorldImportersDW-Full.bak https://github.com/Microsoft/sql-server-samples/releases/download/wide-world-importers-v1.0/WideWorldImportersDW-Full.bak
 
 
 # StackOverflow2010

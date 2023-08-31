@@ -7,14 +7,14 @@ CREATE DATABASE [AdventureWorksDW2017] ON
        (FILENAME= N'/var/opt/mssql/data/AdventureWorksDW2017_log.ldf')
 FOR ATTACH;
 
--- WideWorldImportersDW
---
-CREATE DATABASE [WideWorldImportersDW] ON
-       (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.mdf'),
-       (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf'),
-	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1'),
-	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.ldf')
-FOR ATTACH;
+-- -- WideWorldImportersDW
+-- --
+-- CREATE DATABASE [WideWorldImportersDW] ON
+--        (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.mdf'),
+--        (FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf'),
+-- 	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1'),
+-- 	(FILENAME = N'/var/opt/mssql/data/WideWorldImportersDW.ldf')
+-- FOR ATTACH;
 
 -- StackOverflow2010
 --
