@@ -82,9 +82,13 @@ Permissions are very important, since you are mounting local volumes to your con
 
 ```bash
 # log into your linux (host or wsl2 image)
-mkdir -p /your/path/
-chown 10001:0 /your/path/
-chmod +rwx /your/path/
+mkdir -p ./local_mountpoint/data/
+mkdir -p ./local_mountpoint/shared_folder/
+sudo chown 10001:0 ./local_mountpoint/data/
+sudo chown 10001:0 ./local_mountpoint/shared_folder/
+sudo chmod +rwx ./local_mountpoint/data/
+sudo chmod +rwx ./local_mountpoint/shared_folder/
+#sudo chmod +rwx ./Backups/
 ``` 
 
 And now, in the docker-compose, you can reference that path, for example

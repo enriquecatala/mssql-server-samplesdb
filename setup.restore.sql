@@ -28,3 +28,11 @@ MOVE N'WWI_Log' TO N'/var/opt/mssql/data/WideWorldImporters.ldf',
 MOVE N'WWI_InMemory_Data_1' TO N'/var/opt/mssql/data/WideWorldImporters_InMemory_Data_1',  
 REPLACE, NOUNLOAD,  STATS = 2;
 
+--
+RESTORE DATABASE [WideWorldImportersDW] 
+FROM  DISK = N'/var/opt/mssql/backup/WideWorldImportersDW-Full.bak' WITH  
+	FILE = 1,  MOVE N'WWI_Primary' TO N'/var/opt/mssql/data/WideWorldImportersDW.mdf',  
+	MOVE N'WWI_UserData' TO N'/var/opt/mssql/data/WideWorldImportersDW_UserData.ndf',  
+	MOVE N'WWI_Log' TO N'/var/opt/mssql/data/WideWorldImportersDW.ldf',  
+	MOVE N'WWIDW_InMemory_Data_1' TO N'/var/opt/mssql/data/WideWorldImportersDW_InMemory_Data_1',  
+	REPLACE, NOUNLOAD,  STATS = 2;

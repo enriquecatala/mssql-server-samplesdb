@@ -15,10 +15,10 @@ services:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
       MSSQL_AGENT_ENABLED: "true"
-      FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"      
+      FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"          
     volumes:
       - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
-      - ${SHARED_FOLDER}:/var/opt/mssql/shared_folder
+      - ${SHARED_FOLDER}:/var/opt/mssql/shared_folder      
     ports:
       - "14330:1433"        
     cpu_count: 4
