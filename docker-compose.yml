@@ -19,6 +19,7 @@ services:
     volumes:
       - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
       - ${SHARED_FOLDER}:/var/opt/mssql/shared_folder      
+      - ./Backups:/var/opt/mssql/Backups
     ports:
       - "14330:1433"        
     cpu_count: 4
