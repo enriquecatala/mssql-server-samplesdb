@@ -67,7 +67,7 @@ RUN if [ "$INCLUDE_ALL_DATABASES" = "1" ] ; then 7za x StackOverflow2010.7z -o/v
 ##############################################################
 
 RUN mkdir -p /usr/config
-WORKDIR /usr/config/
+WORKDIR /var/opt/mssql/setup/
 
 COPY setup.* ./
 COPY entrypoint.sh ./

@@ -1,3 +1,4 @@
 #!/bin/bash
-/opt/mssql/bin/sqlservr & /usr/config/setup.sh
+# Start SQL Server
+/opt/mssql/bin/sqlservr & /var/opt/mssql/setup/setup.sh
 eval $1

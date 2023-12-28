@@ -191,7 +191,7 @@ Step 17/24 : RUN mkdir -p /usr/config
  ---> Running in b4935a036c15
 Removing intermediate container b4935a036c15
  ---> 313bc14d74dd
-Step 18/24 : WORKDIR /usr/config/
+Step 18/24 : WORKDIR /var/opt/mssql/setup/
  ---> Running in 113baa1f44ff
 Removing intermediate container 113baa1f44ff
  ---> 71e13a85c09c
