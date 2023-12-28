@@ -22,34 +22,34 @@ Databases included:
 - Pubs
 - Northwind
 - WideWorldImporters
+- WideWorldImportersDW
 - AdventureWorks2017
+- _AdventureWorksDW2017*_
 - _AdventureWorks2016*_
 - _AdventureWorks2014*_
 - _AdventureWorks2012*_
-- _AdventureWorksDW2017*_
 - _StackOverflow2010*_
-- _WideWorldImportersDW*_
 
 
 > NOTE: Databases marked with * must be switched on during build with **INCLUDE_ALL_DATABASES=1**
 
 ## How to run the image
 
-```bash
-# 1- permissions
-#    Since the databases will be restored in your host (local_mountpoint), you need to create the folder and give permissions to the container to write in that folder
-#
-mkdir -p ./local_mountpoint/data/
-mkdir -p ./local_mountpoint/shared_folder/
-sudo chown 10001:0 ./local_mountpoint/data/
-sudo chown 10001:0 ./local_mountpoint/shared_folder/
-sudo chmod +rwx ./local_mountpoint/data/
-sudo chmod +rwx ./local_mountpoint/shared_folder/
+You can run the image with just executing **`make all`**, but if you want more control, you can execute the following commands:
 
-# 2- build and run the image
-#
-docker-compose up --build
+```bash
+# Create the folder where the databases will be restored and download the databases
+# into ./Backups folder
+# 
+make prerequisites
+
+# Build the image
+make build
+
+# Run the image
+docker compose up
 ```
+
 
 Now you can open your favorite SQL Server client and connect to your local SQL Server instance. By default:
 - Server localhost,14330
@@ -70,7 +70,7 @@ Now you can open your favorite SQL Server client and connect to your local SQL S
 Only common databases are deployed by default. To deploy ALL databases in your container, please enable the build flag called "INCLUDE_ALL_DATABASES=1"
 
 ```powershell
-docker-compose build --build-arg INCLUDE_ALL_DATABASES=1
+docker compose build --build-arg INCLUDE_ALL_DATABASES=1
 ```
 
 **IMPORTANT:** StackOverflow2010 database is huge and it will require a couple of minutes to initialize. Please be patient. You can work and play within the other databases while the StackOverflow database is being prepared
@@ -88,7 +88,7 @@ Edit the [docker-compose.yml](./docker-compose.yml) file and comment the followi
 Then, you can create and run the image with the following command:
 
 ```cmd
-docker-compose up --build
+docker compose up --build
 ```
 
 
@@ -110,20 +110,46 @@ With the [docker-compose.yml](./docker-compose.yml) file you will deploy all dat
 
 ### Permissions
 
-Permissions are very important, since you are mounting local volumes to your container. To create a local folder and mount that folder to your container:
+When working with Docker containers that mount local volumes, managing file and directory permissions is crucial. These permissions ensure that the container has the appropriate access rights to the data stored on these volumes. To simplify this process, we have a script named [prerequisites.create_local_directories.sh](./prerequisites.create_local_directories.sh) that automatically sets up the necessary directories and permissions.
+
+#### Setting Up Local Directories for Container Mounts
+
+The [prerequisites.create_local_directories.sh](./prerequisites.create_local_directories.sh) script is designed to create local directories and configure their permissions to match the requirements of the Docker container. By running this script, you avoid the manual process of setting up these directories and permissions.
+
+To understand what the script does, here's an overview of the steps involved:
+
+1. **Create Local Directories**: The script creates directories on your host system that will be mounted into the Docker container. This includes data and shared folders.
+
+    ```bash
+    mkdir -p ./local_mountpoint/data/
+    mkdir -p ./local_mountpoint/shared_folder/
+    ```
+
+2. **Set Ownership**: It changes the ownership of these directories to the user ID (`UID`) and group ID (`GID`) that the SQL Server in the Docker container runs as. This is typically `UID 10001` and `GID 0`.
+
+    ```bash
+    sudo chown 10001:0 ./local_mountpoint/data/
+    sudo chown 10001:0 ./local_mountpoint/shared_folder/
+    ```
+
+3. **Adjust Permissions**: The script sets the necessary read, write, and execute permissions on these directories to ensure that the container can access and modify the data as required.
+
+    ```bash
+    sudo chmod +rwx ./local_mountpoint/data/
+    sudo chmod +rwx ./local_mountpoint/shared_folder/
+    ```
+
+#### How to Use the Script
+
+Simply run the `prerequisites.create_local_directories.sh` script to automatically set up the directories and permissions:
 
 ```bash
-# log into your linux (host or wsl2 image)
-mkdir -p ./local_mountpoint/data/
-mkdir -p ./local_mountpoint/shared_folder/
-sudo chown 10001:0 ./local_mountpoint/data/
-sudo chown 10001:0 ./local_mountpoint/shared_folder/
-sudo chmod +rwx ./local_mountpoint/data/
-sudo chmod +rwx ./local_mountpoint/shared_folder/
-#sudo chmod +rwx ./Backups/
-``` 
+./prerequisites.create_local_directories.sh
+```
 
-And now, in the docker-compose, you can reference that path, for example
+This approach streamlines the setup process and ensures consistency in the permissions, allowing your Docker container to function correctly with the mounted volumes.
+
+And now, in the docker-compose.yml, you can reference that path, for example
 
 ```yaml
     volumes:
@@ -183,7 +209,7 @@ It´s as easy as modifying the [Dockerfile](./Dockerfile), and adding the new ba
 
 The password for the "sa" account is specified at the [docker-compose.yml](./docker-compose.yml) file.
 
-# How it works?
+# How does it works?
 
 Well, its a little tricky but when you find how it works, its very simple and stable:
 
@@ -246,3 +272,4 @@ To avoid the container to stop after first run, you need to ensure that is waiti
 ```docker
 CMD ["sleep infinity"]
 ```
+
