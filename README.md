@@ -1,13 +1,25 @@
-<div>
-    <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=flat-square&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a>
-    <a href="https://www.clouddataninjas.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=clouddataninjas.com&up_color=46C018&url=https%3A%2F%2Fwww.clouddataninjas.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
-    <a href="https://enriquecatala.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=enriquecatala.com&up_color=46C018&url=https%3A%2F%2Fenriquecatala.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
-    <a href="https://www.linkedin.com/in/enriquecatala"><img src="https://img.shields.io/badge/LinkedIn--_.svg?style=flat-square&logo=linkedin" alt="LinkedIn Enrique Catalá Bañuls"></a>
-    <a href="https://twitter.com/enriquecatala"><img src="https://img.shields.io/twitter/follow/enriquecatala?color=blue&label=twitter&style=flat-square" alt="Twitter @enriquecatala"></a>
-    <a href="https://youtube.com/enriquecatala"><img src="https://raw.githubusercontent.com/enriquecatala/enriquecatala/master/img/youtube.png" alt="Data Engineering: Canal youtube de Enrique Catalá" height=20></a>
-</div>
+<div class="social_links">
+    <a href="https://www.clouddataninjas.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=clouddataninjas.com&up_color=46C018&url=https%3A%2F%2Fwww.clouddataninjas.com&style=for-the-badge" alt="Cloud Data Ninjas"></a>
+    <a href="https://github.com/enriquecatala" target="_blank"><img  src="https://img.shields.io/github/followers/enriquecatala?label=GitHub&style=for-the-badge" alt="GitHub followers of Enrique Catalá" ></a>
+    <a href="https://github.com/sponsors/enriquecatala" target="_blank"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=for-the-badge&logo=github&logoColor=EA4AAA" alt="Sponsor Enrique Catalá on GitHub" ></a>    
+    <a href="https://www.linkedin.com/in/enriquecatala" target="_blank"><img src="https://img.shields.io/badge/LinkedIn--_.svg?style=for-the-badge&logo=linkedin" alt="LinkedIn Enrique Catalá" ></a>        
+    <a href="https://twitter.com/enriquecatala" target="_blank"><img src="https://img.shields.io/twitter/follow/enriquecatala?color=blue&label=twitter&style=for-the-badge" alt="Twitter @enriquecatala" ></a>    
+    <a href="https://enriquecatala.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=enriquecatala.com&up_color=46C018&url=https%3A%2F%2Fenriquecatala.com&style=for-the-badge" alt="Data Engineering with Enrique Catalá"></a>
+    <script src="https://apis.google.com/js/platform.js"></script><div class="g-ytsubscribe" data-channelid="UCYboHnN6tvFfHqPWZWY82AQ" data-layout="default" data-count="default"></div>    
+</div> 
 
-<a href="https://mvp.microsoft.com/es-es/PublicProfile/5000312?fullName=Enrique%20Catala"><img src="https://raw.githubusercontent.com/enriquecatala/enriquecatala/master/img/MVP_Logo_horizontal.png" alt="Microsoft DataPlatform MVP Enrique Catalá"></a>
+<div style="display: flex; align-items: center; justify-content: center;">
+  <a href="https://www.credly.com/badges/cde0dbd2-8d03-4ca7-8284-d471d65d0e5f">
+      <img src="https://raw.githubusercontent.com/enriquecatala/enriquecatala/master/img/MVP_Logo_horizontal.png" 
+           alt="Microsoft DataPlatform MVP Enrique Catalá"
+           style="min-height: 100px; max-height: 150px; ">
+  </a>
+  <a href="https://www.clouddataninjas.com">
+          <img src="https://raw.githubusercontent.com/enriquecatala/enriquecatala.github.io/master/img/CLOUDDATANINJAS.png" 
+          alt="Cloud Data Ninjas" 
+          style="min-height: 100px; max-height: 150px; "/>
+  </a>
+</div>
 
 # mssql-server-samplesdb
 
