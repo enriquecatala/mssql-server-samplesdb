@@ -11,11 +11,28 @@
 
 # mssql-server-samplesdb
 
+Easily deploy a Docker instance with SQL Server and all Microsoft Sample databases. Choose between stateless or stateful deployment for your SQL Server needs. Perfect for developers and DBAs looking for a quick and reliable database setup.
 
-This project will deploy a docker instance with all the [Microsoft Sample databases restored](#databases-included). You can deploy by either a [stateless deployment](#stateless-deployment) or a [stateful deployment](#stateful-deployment).
 
-Table of Contents:
+## Quick Start
+
+Run the image instantly with `make all`. For more control use the following commands:
+
+```bash
+make prerequisites # setup
+make build         # build the image
+docker compose up  # run the image
+```
+
+Connect to your SQL Server instance at `localhost,14330` using `sa` and `PaSSw0rd` (configurable in `docker-compose.yml`).
+
+**Table of Contents:**
 - [mssql-server-samplesdb](#mssql-server-samplesdb)
+  - [Quick Start](#quick-start)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+  - [Steps](#steps)
   - [How to run the image](#how-to-run-the-image)
     - [Databases included](#databases-included)
   - [Enable all databases](#enable-all-databases)
@@ -25,19 +42,38 @@ Table of Contents:
       - [Setting Up Local Directories for Container Mounts](#setting-up-local-directories-for-container-mounts)
       - [How to Use the Script](#how-to-use-the-script)
     - [Force Attach (optional)](#force-attach-optional)
-  - [How to change the SQL Server base image](#how-to-change-the-sql-server-base-image)
-  - [How to add new databases to the image](#how-to-add-new-databases-to-the-image)
-  - [How to change the sa password](#how-to-change-the-sa-password)
-- [How does it works?](#how-does-it-works)
-  - [Restoring databases](#restoring-databases)
-    - [Entrypoint](#entrypoint)
-    - [Avoid container to stop after deploy](#avoid-container-to-stop-after-deploy)
+  - [Customization](#customization)
+    - [How to change the SQL Server base image](#how-to-change-the-sql-server-base-image)
+    - [How to add new databases to the image](#how-to-add-new-databases-to-the-image)
+    - [How to change the sa password](#how-to-change-the-sa-password)
+  - [FAQ](#faq)
+    - [How does it works?](#how-does-it-works)
+      - [Restoring databases](#restoring-databases)
+        - [Entrypoint](#entrypoint)
+      - [Avoid container to stop after deploy](#avoid-container-to-stop-after-deploy)
 
 
 [![deploy sql server in docker with mssql-server-samplesdb](http://img.youtube.com/vi/ULL5nntWn1A/0.jpg)](http://www.youtube.com/watch?v=ULL5nntWn1A "mssql-server-samplesdb")
 
 
 > NOTE: If you want me to make a translation of this video to english, please show me  a little of your support! and when I reach 150€ I´ll do it!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
+
+## Features
+- Easy Setup: Deploy SQL Server in Docker with a simple command.
+- Multiple Databases: Includes popular databases like - Northwind, Pubs, and AdventureWorks.
+- Customizable: Options for stateless and stateful deployment.
+- Community Driven: Open for contributions and enhancements.
+
+## Installation
+### Prerequisites
+- Docker
+- Make (optional)
+
+## Steps
+1) Clone the repository: git clone https://github.com/enriquecatala/mssql-server-samplesdb.
+2) Navigate to the directory and run make prerequisites.
+3) Build the image: make build.
+4) Start the container: docker compose up.
 
 
 ## How to run the image
@@ -218,7 +254,9 @@ You can create and run the image with the following command:
 docker compose up --build
 ```
 
-## How to change the SQL Server base image
+## Customization
+
+### How to change the SQL Server base image
 
 The [Dockerfile](./Dockerfile) specifies which base SQL Server Instance you want to use for your image. 
 
@@ -240,15 +278,16 @@ To get the latest SQL Server 2017 version with applied CU
 
 __NOTE:__ To see which SQL Server versions, please go [here](https://hub.docker.com/_/microsoft-mssql-server) and select your "tag"
 
-## How to add new databases to the image
+### How to add new databases to the image
 
 It´s as easy as modifying the [Dockerfile](./Dockerfile), and adding the new backups you want to restore, and modifying the [setup.sql](./setup.sql) file with the RESTORE command.
 
-## How to change the sa password
+### How to change the sa password
 
 The password for the "sa" account is specified at the [docker-compose.yml](./docker-compose.yml) file.
 
-# How does it works?
+## FAQ
+### How does it works?
 
 Well, its a little tricky but when you find how it works, its very simple and stable:
 
@@ -257,11 +296,11 @@ Well, its a little tricky but when you find how it works, its very simple and st
 
 **IMPORTANT:** Please have in mind that starting with SQL Server 2019, mssql server containers are non-root. We need to change to root for executing specific tasks like this one
 
-## Restoring databases
+#### Restoring databases
 
 This is the tricky part since involves 2 scripts and the final command to keep alive the image
 
-### Entrypoint
+##### Entrypoint
 
 ```docker
 COPY setup.* ./
@@ -274,7 +313,7 @@ RUN chmod +x entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 ```
 
-### Avoid container to stop after deploy
+#### Avoid container to stop after deploy
 
 To avoid the container to stop after first run, you need to ensure that is waiting for something. the best solution is to add a sleep infinity...as simple as it sounds :)
 

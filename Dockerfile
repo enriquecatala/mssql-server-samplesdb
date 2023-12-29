@@ -14,16 +14,12 @@ COPY entrypoint.sh ./
 
 # Since SQL Server 2019 is non-root container, we need to force this to install packages
 USER root
-RUN chown -R 10001:0 setup.sh 
-RUN chown -R 10001:0 entrypoint.sh
+RUN chown -R 10001:0 setup.sh entrypoint.sh
 
 # Get to the default user
 USER 10001
-
-RUN chmod +x setup.sh
-RUN chmod +x entrypoint.sh
+RUN chmod +x setup.sh entrypoint.sh
 
 # This entrypoint start sql server, restores data and waits infinitely
 ENTRYPOINT ["./entrypoint.sh"]
-
 CMD ["sleep infinity"]
