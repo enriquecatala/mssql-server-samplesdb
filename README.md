@@ -53,16 +53,11 @@ Connect to your SQL Server instance at `localhost,14330` using `sa` and `PaSSw0r
       - [Avoid container to stop after deploy](#avoid-container-to-stop-after-deploy)
 
 
-[![deploy sql server in docker with mssql-server-samplesdb](http://img.youtube.com/vi/ULL5nntWn1A/0.jpg)](http://www.youtube.com/watch?v=ULL5nntWn1A "mssql-server-samplesdb")
-
-
-> NOTE: If you want me to make a translation of this video to english, please show me  a little of your support! and when I reach 150€ I´ll do it!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
-
 ## Features
-- Easy Setup: Deploy SQL Server in Docker with a simple command.
-- Multiple Databases: Includes popular databases like - Northwind, Pubs, and AdventureWorks.
-- Customizable: Options for stateless and stateful deployment.
-- Community Driven: Open for contributions and enhancements.
+- **Easy Setup**: Deploy SQL Server in Docker with a simple command.
+- **Multiple Databases**: Includes popular databases like - Northwind, Pubs, and AdventureWorks.
+- **Customizable**: Options for stateless and stateful deployment.
+- **Community Driven**: Open for contributions and enhancements.
 
 ## Installation
 ### Prerequisites
@@ -289,12 +284,14 @@ The password for the "sa" account is specified at the [docker-compose.yml](./doc
 ## FAQ
 ### How does it works?
 
-Well, its a little tricky but when you find how it works, its very simple and stable:
+[![deploy sql server in docker with mssql-server-samplesdb](http://img.youtube.com/vi/ULL5nntWn1A/0.jpg)](http://www.youtube.com/watch?v=ULL5nntWn1A "mssql-server-samplesdb")
+
+
+> NOTE: If you want me to make a translation of this video to english, please show me  a little of your support! and when I reach 150€ I´ll do it!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
+
+As you can see, its a little tricky but when you find how it works, its very simple and stable:
 
 [Dockerfile](/Dockerfile) makes 3 mayor steps
-
-
-**IMPORTANT:** Please have in mind that starting with SQL Server 2019, mssql server containers are non-root. We need to change to root for executing specific tasks like this one
 
 #### Restoring databases
 
