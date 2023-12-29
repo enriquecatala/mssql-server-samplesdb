@@ -1,3 +1,7 @@
+--  Enrique Catalá:
+--    Web:      https://www.clouddataninjas.com
+--    Linkedin: https://www.linkedin.com/in/enriquecatala/
+--    Support:  https://github.com/sponsors/enriquecatala
 
 CREATE DATABASE [AdventureWorks2016] ON 
        (FILENAME= N'/var/opt/mssql/data/AdventureWorks2016.mdf'  ),

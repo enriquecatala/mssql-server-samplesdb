@@ -1,5 +1,6 @@
 <div>
     <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=flat-square&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a>
+    <a href="https://www.clouddataninjas.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=clouddataninjas.com&up_color=46C018&url=https%3A%2F%2Fwww.clouddataninjas.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
     <a href="https://enriquecatala.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=enriquecatala.com&up_color=46C018&url=https%3A%2F%2Fenriquecatala.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
     <a href="https://www.linkedin.com/in/enriquecatala"><img src="https://img.shields.io/badge/LinkedIn--_.svg?style=flat-square&logo=linkedin" alt="LinkedIn Enrique Catalá Bañuls"></a>
     <a href="https://twitter.com/enriquecatala"><img src="https://img.shields.io/twitter/follow/enriquecatala?color=blue&label=twitter&style=flat-square" alt="Twitter @enriquecatala"></a>
@@ -10,46 +11,88 @@
 
 # mssql-server-samplesdb
 
+Easily deploy a Docker instance with SQL Server and all Microsoft Sample databases. Choose between stateless or stateful deployment for your SQL Server needs. Perfect for developers and DBAs looking for a quick and reliable database setup.
+
+
+## Quick Start
+
+Run the image instantly with `make all`. For more control use the following commands:
+
+```bash
+make prerequisites # setup
+make build         # build the image
+docker compose up  # run the image
+```
+
+Connect to your SQL Server instance at `localhost,14330` using `sa` and `PaSSw0rd` (configurable in `docker-compose.yml`).
+
+**Table of Contents:**
+- [mssql-server-samplesdb](#mssql-server-samplesdb)
+  - [Quick Start](#quick-start)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+  - [Steps](#steps)
+  - [How to run the image](#how-to-run-the-image)
+    - [Databases included](#databases-included)
+  - [Enable all databases](#enable-all-databases)
+  - [Stateless deployment](#stateless-deployment)
+  - [Stateful deployment](#stateful-deployment)
+    - [Permissions](#permissions)
+      - [Setting Up Local Directories for Container Mounts](#setting-up-local-directories-for-container-mounts)
+      - [How to Use the Script](#how-to-use-the-script)
+    - [Force Attach (optional)](#force-attach-optional)
+  - [Customization](#customization)
+    - [How to change the SQL Server base image](#how-to-change-the-sql-server-base-image)
+    - [How to add new databases to the image](#how-to-add-new-databases-to-the-image)
+    - [How to change the sa password](#how-to-change-the-sa-password)
+  - [FAQ](#faq)
+    - [How does it works?](#how-does-it-works)
+      - [Restoring databases](#restoring-databases)
+        - [Entrypoint](#entrypoint)
+      - [Avoid container to stop after deploy](#avoid-container-to-stop-after-deploy)
+
+
 [![deploy sql server in docker with mssql-server-samplesdb](http://img.youtube.com/vi/ULL5nntWn1A/0.jpg)](http://www.youtube.com/watch?v=ULL5nntWn1A "mssql-server-samplesdb")
 
 
-> NOTE: If you want me to make a translation of this video to english, please help me with a little of support!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
+> NOTE: If you want me to make a translation of this video to english, please show me  a little of your support! and when I reach 150€ I´ll do it!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
 
+## Features
+- Easy Setup: Deploy SQL Server in Docker with a simple command.
+- Multiple Databases: Includes popular databases like - Northwind, Pubs, and AdventureWorks.
+- Customizable: Options for stateless and stateful deployment.
+- Community Driven: Open for contributions and enhancements.
 
-This project will create a docker image with all the sample databases restored. You can deploy by either a [stateless deployment](#stateless-deployment) or a [stateful deployment](#stateful-deployment).
+## Installation
+### Prerequisites
+- Docker
+- Make (optional)
 
-Databases included:
-- Pubs
-- Northwind
-- WideWorldImporters
-- AdventureWorks2017
-- _AdventureWorks2016*_
-- _AdventureWorks2014*_
-- _AdventureWorks2012*_
-- _AdventureWorksDW2017*_
-- _StackOverflow2010*_
-- _WideWorldImportersDW*_
+## Steps
+1) Clone the repository: git clone https://github.com/enriquecatala/mssql-server-samplesdb.
+2) Navigate to the directory and run make prerequisites.
+3) Build the image: make build.
+4) Start the container: docker compose up.
 
-
-> NOTE: Databases marked with * must be switched on during build with **INCLUDE_ALL_DATABASES=1**
 
 ## How to run the image
 
-```bash
-# 1- permissions
-#    Since the databases will be restored in your host (local_mountpoint), you need to create the folder and give permissions to the container to write in that folder
-#
-mkdir -p ./local_mountpoint/data/
-mkdir -p ./local_mountpoint/shared_folder/
-sudo chown 10001:0 ./local_mountpoint/data/
-sudo chown 10001:0 ./local_mountpoint/shared_folder/
-sudo chmod +rwx ./local_mountpoint/data/
-sudo chmod +rwx ./local_mountpoint/shared_folder/
+You can run the image with just executing **`make all`**, but if you want more control, you can execute the following commands:
 
-# 2- build and run the image
-#
-docker-compose up --build
+```bash
+# Create the folder where the databases will be restored and download the databases
+# into ./Backups folder
+# 
+make prerequisites
+
+# Build the image
+make build
+
+# Run the image
+docker compose up
 ```
+
 
 Now you can open your favorite SQL Server client and connect to your local SQL Server instance. By default:
 - Server localhost,14330
@@ -65,12 +108,36 @@ Now you can open your favorite SQL Server client and connect to your local SQL S
       - "14330:1433"  
 ```
 
+### Databases included
+
+Databases included:
+- Pubs
+- Northwind
+- WideWorldImporters
+- WideWorldImportersDW
+- AdventureWorks2017
+- _AdventureWorksDW2017*_
+- _AdventureWorks2016*_
+- _AdventureWorks2014*_
+- _AdventureWorks2012*_
+- _StackOverflow2010*_
+
+
+> NOTE: Databases marked with * must be [switched on during build](#enable-all-databases)
+
 ## Enable all databases
 
-Only common databases are deployed by default. To deploy ALL databases in your container, please enable the build flag called "INCLUDE_ALL_DATABASES=1"
+Only common databases are deployed by default. To deploy ALL databases in your container, please edit the **[.env](.env)** file and set the following variable to 1:
 
-```powershell
-docker-compose build --build-arg INCLUDE_ALL_DATABASES=1
+```bash
+INCLUDE_ALL_DATABASES=1
+```
+
+```cmd
+# to make sure that all databases are deployed, you can execute
+make clean
+# to build the image and run it
+make all
 ```
 
 **IMPORTANT:** StackOverflow2010 database is huge and it will require a couple of minutes to initialize. Please be patient. You can work and play within the other databases while the StackOverflow database is being prepared
@@ -83,12 +150,12 @@ Edit the [docker-compose.yml](./docker-compose.yml) file and comment the followi
 #volumes:
 #      - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
 ```
->NOTE: Doing that, will disable mounting the local folder specified in the [.env](.env) file
+>NOTE: Doing that, will disable mounting the local folder specified in the **[.env](.env)** file
 
 Then, you can create and run the image with the following command:
 
 ```cmd
-docker-compose up --build
+docker compose up --build
 ```
 
 
@@ -110,20 +177,51 @@ With the [docker-compose.yml](./docker-compose.yml) file you will deploy all dat
 
 ### Permissions
 
-Permissions are very important, since you are mounting local volumes to your container. To create a local folder and mount that folder to your container:
+When working with Docker containers that mount local volumes, managing file and directory permissions is crucial. These permissions ensure that the container has the appropriate access rights to the data stored on these volumes. To simplify this process, we have a script named [prerequisites.create_local_directories.sh](./prerequisites.create_local_directories.sh) that automatically sets up the necessary directories and permissions.
+
+>NOTE: This is automatically done when you execute **`make prerequisites`**
+
+#### Setting Up Local Directories for Container Mounts
+
+The [prerequisites.create_local_directories.sh](./prerequisites.create_local_directories.sh) script is designed to create local directories and configure their permissions to match the requirements of the Docker container. By running this script, you avoid the manual process of setting up these directories and permissions.
+
+To understand what the script does, here's an overview of the steps involved:
+
+1. **Create Local Directories**: The script creates directories on your host system that will be mounted into the Docker container. This includes data and shared folders.
+
+    ```bash
+    mkdir -p ./local_mountpoint/data/
+    mkdir -p ./local_mountpoint/shared_folder/
+    ```
+
+2. **Set Ownership**: It changes the ownership of these directories to the user ID (`UID`) and group ID (`GID`) that the SQL Server in the Docker container runs as. This is typically `UID 10001` and `GID 0`.
+
+    ```bash
+    sudo chown 10001:0 ./local_mountpoint/data/
+    sudo chown 10001:0 ./local_mountpoint/shared_folder/
+    ```
+
+3. **Adjust Permissions**: The script sets the necessary read, write, and execute permissions on these directories to ensure that the container can access and modify the data as required.
+
+    ```bash
+    sudo chmod +rwx ./local_mountpoint/data/
+    sudo chmod +rwx ./local_mountpoint/shared_folder/
+    ```
+
+#### How to Use the Script
+
+>NOTE: This is automatically done when you execute **`make prerequisites`**
+
+
+Simply run the `prerequisites.create_local_directories.sh` script to automatically set up the directories and permissions:
 
 ```bash
-# log into your linux (host or wsl2 image)
-mkdir -p ./local_mountpoint/data/
-mkdir -p ./local_mountpoint/shared_folder/
-sudo chown 10001:0 ./local_mountpoint/data/
-sudo chown 10001:0 ./local_mountpoint/shared_folder/
-sudo chmod +rwx ./local_mountpoint/data/
-sudo chmod +rwx ./local_mountpoint/shared_folder/
-#sudo chmod +rwx ./Backups/
-``` 
+./prerequisites.create_local_directories.sh
+```
 
-And now, in the docker-compose, you can reference that path, for example
+This approach streamlines the setup process and ensures consistency in the permissions, allowing your Docker container to function correctly with the mounted volumes.
+
+And now, in the docker-compose.yml, you can reference that path, for example
 
 ```yaml
     volumes:
@@ -141,7 +239,10 @@ mssql-server-samplesdb | 2020-05-25 16:23:11.74 Server      Setup step is copyin
 ```
 
 
-### Force Attach
+### Force Attach (optional)
+
+>NOTE: This is a hack for anyone who is still using Windows10 with WSL2 (win11 is fixed)
+
 - FORCE_ATTACH_IF_MDF_EXISTS
 
   1 -> if you don´t want to "restore" and the files exists, you can attach those databases
@@ -150,10 +251,12 @@ mssql-server-samplesdb | 2020-05-25 16:23:11.74 Server      Setup step is copyin
 You can create and run the image with the following command:
 
 ```cmd
-docker-compose up --build
+docker compose up --build
 ```
 
-## How to change the SQL Server base image
+## Customization
+
+### How to change the SQL Server base image
 
 The [Dockerfile](./Dockerfile) specifies which base SQL Server Instance you want to use for your image. 
 
@@ -175,58 +278,29 @@ To get the latest SQL Server 2017 version with applied CU
 
 __NOTE:__ To see which SQL Server versions, please go [here](https://hub.docker.com/_/microsoft-mssql-server) and select your "tag"
 
-## How to add new databases to the image
+### How to add new databases to the image
 
 It´s as easy as modifying the [Dockerfile](./Dockerfile), and adding the new backups you want to restore, and modifying the [setup.sql](./setup.sql) file with the RESTORE command.
 
-## How to change the sa password
+### How to change the sa password
 
 The password for the "sa" account is specified at the [docker-compose.yml](./docker-compose.yml) file.
 
-# How it works?
+## FAQ
+### How does it works?
 
 Well, its a little tricky but when you find how it works, its very simple and stable:
 
 [Dockerfile](/Dockerfile) makes 3 mayor steps
 
-## Installing curl and 7-zip
-
-This is the first thing we need to do, since we are going to download directly to the image, the databases we want
-
-```docker
-RUN apt-get update && apt-get install -y  \
-	curl \
-	apt-transport-https \
-  p7zip-full
-```
 
 **IMPORTANT:** Please have in mind that starting with SQL Server 2019, mssql server containers are non-root. We need to change to root for executing specific tasks like this one
 
-## Downloading databases
-
-Once we have the curl installed, we are now ready to download the databases, and that´s what you found here:
-
-```docker
-##############################################################
-# DATABASES SECTION
-#    1) Add here the databases you want to have in your image
-#    2) Edit setup.sql and include the RESTORE commands
-#
-
-# Adventureworks databases
-#
-RUN curl -L -o AdventureWorks2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
-RUN curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016.bak
-...
-```
-
-_NOTE: Here you can add-remove the databases you want_
-
-## Restoring databases
+#### Restoring databases
 
 This is the tricky part since involves 2 scripts and the final command to keep alive the image
 
-### Entrypoint
+##### Entrypoint
 
 ```docker
 COPY setup.* ./
@@ -239,10 +313,11 @@ RUN chmod +x entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
 ```
 
-### Avoid container to stop after deploy
+#### Avoid container to stop after deploy
 
 To avoid the container to stop after first run, you need to ensure that is waiting for something. the best solution is to add a sleep infinity...as simple as it sounds :)
 
 ```docker
 CMD ["sleep infinity"]
 ```
+

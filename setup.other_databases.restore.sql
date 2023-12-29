@@ -1,3 +1,7 @@
+--  Enrique Catalá:
+--    Web:      https://www.clouddataninjas.com
+--    Linkedin: https://www.linkedin.com/in/enriquecatala/
+--    Support:  https://github.com/sponsors/enriquecatala
 
 RESTORE DATABASE [AdventureWorks2016] FROM  DISK = N'/var/opt/mssql/backup/AdventureWorks2016.bak' WITH  
 FILE = 1,  MOVE N'AdventureWorks2016_Data' TO N'/var/opt/mssql/data/AdventureWorks2016_Data.mdf',  

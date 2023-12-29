@@ -3,7 +3,4 @@ local_mountpoint/shared_folder/*
 Backups/*
 !Backups/Northwind.bak
 !Backups/Pubs.bak
-
-
-
-
+config.log

@@ -1,5 +1,10 @@
 version: '2.4'
 
+#  Enrique Catalá:
+#    Web:      https://www.clouddataninjas.com
+#    Linkedin: https://www.linkedin.com/in/enriquecatala/
+#    Support:  https://github.com/sponsors/enriquecatala
+
 services:
   db1:
     container_name: mssql-server-samplesdb
@@ -9,17 +14,18 @@ services:
     hostname:
         mssql-samplesdb
     domainname:
-        enriquecatala.com    
+        enriquecatala.com        
     environment:
       MSSQL_SA_PASSWORD: "PaSSw0rd"
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
       MSSQL_AGENT_ENABLED: "true"
-      FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"          
+      FORCE_ATTACH_IF_MDF_EXISTS: "${FORCE_ATTACH_IF_MDF_EXISTS}"    
+      INCLUDE_ALL_DATABASES: "${INCLUDE_ALL_DATABASES}"      
     volumes:
       - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
       - ${SHARED_FOLDER}:/var/opt/mssql/shared_folder      
-      - ./Backups:/var/opt/mssql/Backups
+      - ./Backups:/var/opt/mssql/backup
     ports:
       - "14330:1433"        
     cpu_count: 4

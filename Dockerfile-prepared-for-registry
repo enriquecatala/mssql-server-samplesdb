@@ -49,7 +49,7 @@ COPY ./Backups/Northwind.bak ./
 ##############################################################
 
 RUN mkdir -p /usr/config
-WORKDIR /usr/config/
+WORKDIR /var/opt/mssql/setup/
 
 COPY setup.* ./
 COPY entrypoint.sh ./
