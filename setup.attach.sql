@@ -1,6 +1,9 @@
--- Restoring databases
--- Enrique Catalá: 
---     Since there is a bug with WSL2 on Windows10, we can´t restore databases directly and first require a deploy of empty data, thats the reason for the CREATE DATABASE commands
+--  Enrique Catalá:
+--    Web:      https://www.clouddataninjas.com
+--    Linkedin: https://www.linkedin.com/in/enriquecatala/
+--    Support:  https://github.com/sponsors/enriquecatala
+
+--    NOTE: Since there is a bug with WSL2 on Windows10, we can´t restore databases directly and first require a deploy of empty data, thats the reason for the CREATE DATABASE commands
 -- pubs
 CREATE DATABASE [Pubs] ON 
        (FILENAME= N'/var/opt/mssql/data/Pubs.mdf'  ),

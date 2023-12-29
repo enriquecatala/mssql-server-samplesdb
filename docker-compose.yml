@@ -1,5 +1,10 @@
 version: '2.4'
 
+#  Enrique Catalá:
+#    Web:      https://www.clouddataninjas.com
+#    Linkedin: https://www.linkedin.com/in/enriquecatala/
+#    Support:  https://github.com/sponsors/enriquecatala
+
 services:
   db1:
     container_name: mssql-server-samplesdb

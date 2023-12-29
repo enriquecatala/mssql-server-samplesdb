@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#  Enrique Catalá:
+#    Web:      https://www.clouddataninjas.com
+#    Linkedin: https://www.linkedin.com/in/enriquecatala/
+#    Support:  https://github.com/sponsors/enriquecatala
+
+
 # wait for MSSQL server to start
 export STATUS=1
 i=0

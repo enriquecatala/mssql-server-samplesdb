@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#  Enrique Catalá:
+#    Web:      https://www.clouddataninjas.com
+#    Linkedin: https://www.linkedin.com/in/enriquecatala/
+#    Support:  https://github.com/sponsors/enriquecatala
+
+
 # Define the backups directory
 BACKUPS_DIR="./Backups"
 

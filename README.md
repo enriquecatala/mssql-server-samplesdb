@@ -1,5 +1,6 @@
 <div>
     <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=flat-square&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a>
+    <a href="https://www.clouddataninjas.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=clouddataninjas.com&up_color=46C018&url=https%3A%2F%2Fwww.clouddataninjas.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
     <a href="https://enriquecatala.com"><img src="https://img.shields.io/website?down_color=red&down_message=down&label=enriquecatala.com&up_color=46C018&url=https%3A%2F%2Fenriquecatala.com&style=flat-square" alt="Data Engineering with Enrique Catalá"></a>
     <a href="https://www.linkedin.com/in/enriquecatala"><img src="https://img.shields.io/badge/LinkedIn--_.svg?style=flat-square&logo=linkedin" alt="LinkedIn Enrique Catalá Bañuls"></a>
     <a href="https://twitter.com/enriquecatala"><img src="https://img.shields.io/twitter/follow/enriquecatala?color=blue&label=twitter&style=flat-square" alt="Twitter @enriquecatala"></a>
@@ -10,28 +11,34 @@
 
 # mssql-server-samplesdb
 
+
+This project will deploy a docker instance with all the [Microsoft Sample databases restored](#databases-included). You can deploy by either a [stateless deployment](#stateless-deployment) or a [stateful deployment](#stateful-deployment).
+
+Table of Contents:
+- [mssql-server-samplesdb](#mssql-server-samplesdb)
+  - [How to run the image](#how-to-run-the-image)
+    - [Databases included](#databases-included)
+  - [Enable all databases](#enable-all-databases)
+  - [Stateless deployment](#stateless-deployment)
+  - [Stateful deployment](#stateful-deployment)
+    - [Permissions](#permissions)
+      - [Setting Up Local Directories for Container Mounts](#setting-up-local-directories-for-container-mounts)
+      - [How to Use the Script](#how-to-use-the-script)
+    - [Force Attach (optional)](#force-attach-optional)
+  - [How to change the SQL Server base image](#how-to-change-the-sql-server-base-image)
+  - [How to add new databases to the image](#how-to-add-new-databases-to-the-image)
+  - [How to change the sa password](#how-to-change-the-sa-password)
+- [How does it works?](#how-does-it-works)
+  - [Restoring databases](#restoring-databases)
+    - [Entrypoint](#entrypoint)
+    - [Avoid container to stop after deploy](#avoid-container-to-stop-after-deploy)
+
+
 [![deploy sql server in docker with mssql-server-samplesdb](http://img.youtube.com/vi/ULL5nntWn1A/0.jpg)](http://www.youtube.com/watch?v=ULL5nntWn1A "mssql-server-samplesdb")
 
 
-> NOTE: If you want me to make a translation of this video to english, please help me with a little of support!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
+> NOTE: If you want me to make a translation of this video to english, please show me  a little of your support! and when I reach 150€ I´ll do it!  <a href="https://github.com/sponsors/enriquecatala"><img src="https://img.shields.io/badge/GitHub_Sponsors--_.svg?style=social&logo=github&logoColor=EA4AAA" alt="GitHub Sponsors"></a> 
 
-
-This project will create a docker image with all the sample databases restored. You can deploy by either a [stateless deployment](#stateless-deployment) or a [stateful deployment](#stateful-deployment).
-
-Databases included:
-- Pubs
-- Northwind
-- WideWorldImporters
-- WideWorldImportersDW
-- AdventureWorks2017
-- _AdventureWorksDW2017*_
-- _AdventureWorks2016*_
-- _AdventureWorks2014*_
-- _AdventureWorks2012*_
-- _StackOverflow2010*_
-
-
-> NOTE: Databases marked with * must be switched on during build with **INCLUDE_ALL_DATABASES=1**
 
 ## How to run the image
 
@@ -65,12 +72,36 @@ Now you can open your favorite SQL Server client and connect to your local SQL S
       - "14330:1433"  
 ```
 
+### Databases included
+
+Databases included:
+- Pubs
+- Northwind
+- WideWorldImporters
+- WideWorldImportersDW
+- AdventureWorks2017
+- _AdventureWorksDW2017*_
+- _AdventureWorks2016*_
+- _AdventureWorks2014*_
+- _AdventureWorks2012*_
+- _StackOverflow2010*_
+
+
+> NOTE: Databases marked with * must be [switched on during build](#enable-all-databases)
+
 ## Enable all databases
 
-Only common databases are deployed by default. To deploy ALL databases in your container, please enable the build flag called "INCLUDE_ALL_DATABASES=1"
+Only common databases are deployed by default. To deploy ALL databases in your container, please edit the **[.env](.env)** file and set the following variable to 1:
 
-```powershell
-docker compose build --build-arg INCLUDE_ALL_DATABASES=1
+```bash
+INCLUDE_ALL_DATABASES=1
+```
+
+```cmd
+# to make sure that all databases are deployed, you can execute
+make clean
+# to build the image and run it
+make all
 ```
 
 **IMPORTANT:** StackOverflow2010 database is huge and it will require a couple of minutes to initialize. Please be patient. You can work and play within the other databases while the StackOverflow database is being prepared
@@ -83,7 +114,7 @@ Edit the [docker-compose.yml](./docker-compose.yml) file and comment the followi
 #volumes:
 #      - ${LOCAL_MOUNTPOINT}:/var/opt/mssql/data
 ```
->NOTE: Doing that, will disable mounting the local folder specified in the [.env](.env) file
+>NOTE: Doing that, will disable mounting the local folder specified in the **[.env](.env)** file
 
 Then, you can create and run the image with the following command:
 
@@ -111,6 +142,8 @@ With the [docker-compose.yml](./docker-compose.yml) file you will deploy all dat
 ### Permissions
 
 When working with Docker containers that mount local volumes, managing file and directory permissions is crucial. These permissions ensure that the container has the appropriate access rights to the data stored on these volumes. To simplify this process, we have a script named [prerequisites.create_local_directories.sh](./prerequisites.create_local_directories.sh) that automatically sets up the necessary directories and permissions.
+
+>NOTE: This is automatically done when you execute **`make prerequisites`**
 
 #### Setting Up Local Directories for Container Mounts
 
@@ -141,6 +174,9 @@ To understand what the script does, here's an overview of the steps involved:
 
 #### How to Use the Script
 
+>NOTE: This is automatically done when you execute **`make prerequisites`**
+
+
 Simply run the `prerequisites.create_local_directories.sh` script to automatically set up the directories and permissions:
 
 ```bash
@@ -167,7 +203,10 @@ mssql-server-samplesdb | 2020-05-25 16:23:11.74 Server      Setup step is copyin
 ```
 
 
-### Force Attach
+### Force Attach (optional)
+
+>NOTE: This is a hack for anyone who is still using Windows10 with WSL2 (win11 is fixed)
+
 - FORCE_ATTACH_IF_MDF_EXISTS
 
   1 -> if you don´t want to "restore" and the files exists, you can attach those databases
@@ -176,7 +215,7 @@ mssql-server-samplesdb | 2020-05-25 16:23:11.74 Server      Setup step is copyin
 You can create and run the image with the following command:
 
 ```cmd
-docker-compose up --build
+docker compose up --build
 ```
 
 ## How to change the SQL Server base image
@@ -215,38 +254,8 @@ Well, its a little tricky but when you find how it works, its very simple and st
 
 [Dockerfile](/Dockerfile) makes 3 mayor steps
 
-## Installing curl and 7-zip
-
-This is the first thing we need to do, since we are going to download directly to the image, the databases we want
-
-```docker
-RUN apt-get update && apt-get install -y  \
-	curl \
-	apt-transport-https \
-  p7zip-full
-```
 
 **IMPORTANT:** Please have in mind that starting with SQL Server 2019, mssql server containers are non-root. We need to change to root for executing specific tasks like this one
-
-## Downloading databases
-
-Once we have the curl installed, we are now ready to download the databases, and that´s what you found here:
-
-```docker
-##############################################################
-# DATABASES SECTION
-#    1) Add here the databases you want to have in your image
-#    2) Edit setup.sql and include the RESTORE commands
-#
-
-# Adventureworks databases
-#
-RUN curl -L -o AdventureWorks2017.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2017.bak
-RUN curl -L -o AdventureWorks2016.bak https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016.bak
-...
-```
-
-_NOTE: Here you can add-remove the databases you want_
 
 ## Restoring databases
 

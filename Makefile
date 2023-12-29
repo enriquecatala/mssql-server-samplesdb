@@ -1,4 +1,9 @@
-# Makefile to automate the setup and deployment of the Docker container
+#  Enrique Catalá:
+#    Web:      https://www.clouddataninjas.com
+#    Linkedin: https://www.linkedin.com/in/enriquecatala/
+#    Support:  https://github.com/sponsors/enriquecatala
+
+.PHONY: create-local-directories download-databases download-all-databases prerequisites build start all clean
 
 # Step 1: Create local directories
 create-local-directories:
@@ -7,16 +12,15 @@ create-local-directories:
 
 # Step 2: Download databases with INCLUDE_ALL_DATABASES set to 1
 download-databases:
-	@echo "Downloading databases..."
+	@echo "Downloading databases to './Backups' folder..."
 	INCLUDE_ALL_DATABASES=0 ./prerequisites.download_databases.sh
 
 download-all-databases:
-	@echo "Downloading databases..."
+	@echo "Downloading ALL databases to './Backups' folder..."
 	INCLUDE_ALL_DATABASES=1 ./prerequisites.download_databases.sh
 
 # Prerequisites: Executes the creation of the directory and the download of the databases
 prerequisites: create-local-directories download-all-databases
-
 
 # Step 3: Build the Docker container
 build:
@@ -31,7 +35,9 @@ start:
 # Default make target to run all steps
 all:
 	@echo "Setting up the environment..."
-	prerequisites build start
+	$(MAKE) prerequisites	
+	$(MAKE) build 
+	$(MAKE) start
 
 clean:
 	@echo "Cleaning up everything, including databases..."
@@ -40,5 +46,3 @@ clean:
 	sudo rm -rf ./Backups/WideWorldImporters*
 	sudo rm -rf ./local_mountpoint/
 
-	
-.PHONY: create-local-directories download-databases download-all-databases prerequisites build start all
